@@ -4,7 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build-css": "npx tailwindcss -i ./styles/input.css -o ./styles/output.css --watch"
+    "build-css": "npx tailwindcss -i ./styles/input.css -o ./styles/output.css",
+    "watch-css": "npx tailwindcss -i ./styles/input.css -o ./styles/output.css --watch",
+    "docker:build": "docker build -t portfolio-site .",
+    "docker:run": "docker run -p 8080:80 portfolio-site",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down"
   },
   "repository": {
     "type": "git",
