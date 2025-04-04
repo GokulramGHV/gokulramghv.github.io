@@ -162,7 +162,12 @@ projectsList = [
 ];
 
 var darkMode = !window.matchMedia("(prefers-color-scheme: dark)").matches;
-function toggle() {
+function toggle(init = false) {
+  if (!init) {
+    let from = darkMode ? "dark" : "light";
+    let to = darkMode ? "light" : "dark";
+    posthog.capture("changed_theme", { from: from, to: to });
+  }
   darkMode = !darkMode;
   const video_dark = document.getElementById("back_video_dark");
   const video_light = document.getElementById("back_video_light");
@@ -180,7 +185,7 @@ function toggle() {
     if (video_light) video_light.classList.remove("opacity-0");
   }
 }
-toggle();
+toggle(true);
 
 var avatar_opacity = 100;
 const changeAvatarOpacity = () => {
@@ -228,6 +233,9 @@ window.addEventListener("load", () => {
 let viewProjects = false;
 document.getElementById("projects").style.display = "none";
 function setViewProjects() {
+  if (viewProjects) {
+    posthog.capture("viewed_projects");
+  }
   viewProjects = !viewProjects;
   const spline_viewer = document.getElementById("spline-viewer");
   if (viewProjects) {
