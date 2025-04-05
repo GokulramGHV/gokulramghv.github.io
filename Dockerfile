@@ -14,6 +14,5 @@ COPY --from=build /app/styles ./styles
 COPY --from=build /app/index.html ./index.html
 COPY --from=build /app/assets ./assets
 COPY --from=build /app/index.js ./index.js
-COPY thttpd.conf /etc/thttpd.conf
 EXPOSE 3000
-CMD ["thttpd", "-D", "-h", "0.0.0.0", "-p", "3000", "-C", "/etc/thttpd.conf"]
+CMD ["thttpd", "-D", "-h", "0.0.0.0", "-p", "3000", "-d", "/www", "-u", "nobody", "-l", "-", "-M", "300"]
