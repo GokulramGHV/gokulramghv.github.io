@@ -6,13 +6,14 @@ RUN npm install
 COPY . .
 RUN npm run build-css
 
-# Serve Stage
-FROM nginx:stable-alpine
-WORKDIR /usr/share/nginx/html
+# Serve Stage using thttpd
+FROM alpine:latest
+RUN apk add --no-cache thttpd
+WORKDIR /www
 COPY --from=build /app/styles ./styles
 COPY --from=build /app/index.html ./index.html
 COPY --from=build /app/assets ./assets
 COPY --from=build /app/index.js ./index.js
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY thttpd.conf /etc/thttpd.conf
 EXPOSE 3000
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["thttpd", "-D", "-f", "0.0.0.0", "-p", "3000", "-C", "/etc/thttpd.conf"]
